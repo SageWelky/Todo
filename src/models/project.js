@@ -6,7 +6,7 @@ class Project {
   #creationDate;
   #listOfTodos;
 
-  constructor(name, id, creationDate, listOfTodos = []) {
+  constructor(name, id, creationDate, listOfTodos = {}) {
     this.#name = name;
     this.#id = id;
     this.#creationDate = creationDate;
@@ -15,10 +15,10 @@ class Project {
 
   toJSON() {
     return {
-      name: this.getName,
-      id: this.getId,
-      creationDate: this.getCreationDate,
-      listOfTodos: this.getListOfTodos,
+      name: this.getName(),
+      id: this.getId(),
+      creationDate: this.getCreationDate(),
+      listOfTodos: this.getListOfTodos(),
     };
   }
 
@@ -39,11 +39,13 @@ class Project {
     this.#name = newName;
   }
   addTodoToList(newTodo) {
-    this.#listOfTodos.push(newTodo);
+    this.#listOfTodos[`${newTodo.getId()}`] = newTodo;
   }
-  loadTaskStorage(index) {
-    let x = this.#listOfTodos[index];
-    this.#listOfTodos[index] = new TodoItem(...x);
+  removeTodoFromList(todoUuid) {
+    delete this.#listOfTodos[`${todoUuid}`];
+  }
+  loadTaskStorage(todo) {
+    this.#listOfTodos[`${todo.getId()}`] = new TodoItem(...todo);
   }
 
 }

@@ -1,39 +1,45 @@
 class TodoItem {
   #name;
   #id;
+  #status;
   #description;
   #notes;
   #priority;
   #dueDate
   #creationDate;
 
-
-  //Add creationDate default paramater
-  constructor(name, id, description, notes, priority, dueDate, creationDate) {
+  constructor(name, id, status, description, notes, priority, dueDate, creationDate) {
     this.#name = name;
     this.#id = id;
+    this.#status = status;
     this.#description = description;
     this.#notes = notes;
     this.#priority = priority;
     this.#dueDate = dueDate;
     this.#creationDate = creationDate;
   }
+
   toJSON() {
     return {
-      name: this.getName,
-      id: this.getId,
-      description: this.getDescription,
-      notes: this.getNotes,
-      priority: this.getPriority,
-      dueDate: this.getDueDate,
-      creationDate: this.getCreationDate,
+      name: this.getName(),
+      id: this.getId(),
+      status: this.getStatus(),
+      description: this.getDescription(),
+      notes: this.getNotes(),
+      priority: this.getPriority(),
+      dueDate: this.getDueDate(),
+      creationDate: this.getCreationDate(),
     };
   }
+
   getName() {
     return this.#name;
   }
   getId() {
     return this.#id;
+  }
+  getStatus() {
+    return this.#status;
   }
   getDescription() {
     return this.#description;
@@ -52,6 +58,9 @@ class TodoItem {
   }
   setName(newName) {
     this.#name = newName;
+  }
+  setStatus(newStatus) {
+    this.#status = newStatus;
   }
   setDescription(newDescription) {
     this.#description = newDescription;
