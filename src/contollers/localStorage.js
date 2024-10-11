@@ -1,12 +1,12 @@
 import Project from "../models/project";
 
 
-function saveProjects(projects) {
+export function saveProjects(projects) {
   localStorage.setItem("projects", JSON.stringify(projects));
 }
 
-function loadProjects() {
-  let projects = JSON.parse(localStorage.getItem("projects") || {});
+export function loadProjects() {
+  let projects = JSON.parse(localStorage.getItem("projects") || "{}");
 
   for (let project in projects) {
     project = new Project(...project);
@@ -16,9 +16,3 @@ function loadProjects() {
   }
   return projects;
 }
-
-
-
-
-
-export { saveProjects, loadProjects };
