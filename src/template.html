@@ -15,16 +15,17 @@
       <div class="list-controls">
         <h2>Projects:</h2>
         <div>
-          <button class="modal-test">Modal Test</button>
+          <form id="wire">
+            <input class="writing" type="hidden" value="Click to edit this text.">
+            <p id="myTextField">Click to edit this text.</p>
+          </form>
+          <button class="task-modal-test">Modal Test</button>
           <button class="add-project-button">New Project</button>
-          <button class="edit-project-button">Edit Selected Project</button>
           <button class="delete-project-button">Delete Selected Project</button>
-          <!-- Automatically populates from local storage -->
         </div>
       </div>
       <div class="list-window">
-        <ul>[UL FILLED WITH PROJECT LI LIST]
-          <li></li>
+        <ul class="project-list-view">
         </ul>
       </div>
     </div>
@@ -36,26 +37,26 @@
           <button class="add-task-button">New Todo</button>
           <button class="edit-task-button">Edit Selected Todo</button>
           <button class="delete-task-button">Delete Selected Todo</button>
-          <!-- Populates from local storage through lookup when a project is selected -->
         </div>
       </div>
       <div class="list-window">
-        <ul class="todo-list-view">[UL FILLED WITH TODO LI LIST]
-          <li></li>
+        <ul class="todo-list-view">
         </ul>
       </div>
     </div>
   </div>
-  <div class="modal">
+
+
+
+  <div class="task-modal">
     <div class="form-container">
 
       <h2>Create Todo:</h2>
 
       <form id="task-form">
-        <!-- projectUuid, name, description, notes, priority, dueDate -->
 
         <p class="tname">
-          <label for="task-name">Todo name:</label>
+          <label for="task-name">Todo Name:</label>
           <input type="text" id="task-name" name="todoname" value="" />
         </p>
 
@@ -65,14 +66,14 @@
         </p>
 
         <div class="tnotes">
-          <label for="task-notes">Todo notes:</label>
-          <textarea id="task-notes" name="todonotes" rows="4" cols="40" value="" ></textarea>
+          <label for="task-notes">Todo Notes:</label>
+          <textarea id="task-notes" name="todonotes" rows="4" cols="40" value=""></textarea>
           <ul id="task-note-list-ul"></ul>
         </div>
 
         <div class="tpriority">
           <fieldset>
-            <legend>Priority</legend>
+            <legend>Todo Priority</legend>
             <ul id="priority-list-ul">
               <li>
                 <label for="low">Low</label>
@@ -91,19 +92,46 @@
         </div>
 
         <p class="tduedate">
-          <label for="task-due-date">Due date:</label>
-          <input type="date" id="task-due-date" name="trip-start" value="2018-07-22" min="2018-01-01" max="2018-12-31" />
+          <label for="task-due-date">Todo Due Date:</label>
+          <input type="date" id="task-due-date" name="tododuedate" value="" />
         </p>
 
-        <!-- <input type="submit" value="Submit" /> -->
+        <p class="tstatus">
+          <input type="checkbox" id="task-status" name="todostatus" value="" />
+          <label for="task-status" style="user-select: none;">Task Completed:</label>
+        </p>
 
       </form>
 
-      <button class="test-submit">Test Submit</button>
+      <div>
+        <button type="submit" form="task-form">Submit</button>
+        <button type="button" class="task-cancel-button">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="project-modal">
+    <div class="form-container">
+
+      <h2>Create Project:</h2>
+
+      <form id="project-form">
+        <p class="pname">
+          <label for="project-name">Project Name:</label>
+          <input type="text" id="project-name" name="projectname" value="" required/>
+        </p>
+      </form>
+
+      <div>
+        <button type="submit" form="project-form">Submit</button>
+        <button type="button" class="project-cancel-button">Cancel</button>
+      </div>
 
     </div>
 
   </div>
+
   <script type="text/javascript">
     $(document).ready(function() {
 

@@ -1,33 +1,41 @@
-import { todoItemAppender } from "../helpers/listAppendHelper";
-import { createNewTodo } from "./itemCreation";
+import { todoItemAppender, projectItemAppender } from "../helpers/listAppendHelper";
+import { createNewTodo, createNewProject } from "./itemCreation";
 
-function openTodoForm(projectUuid, todoUuid = "", name = "", status = "", description = "", notes = "", priority = "", dueDate = "", creationDate = "") {
-  //all form append code
+let testModalButton = document.querySelector('.task-modal-test');
+let taskModal = document.querySelector('.task-modal');
+
+function openTodoForm(name = "", status = "", description = "", notes = "", priority = "average", dueDate = "", todoUuid = "", creationDate = "") {
+
+  let taskForm = document.querySelector('#task-form');
+  if(taskForm.classList.contains('edit-mode')) {
+    editId = todoUuid;
+    editCreationDate = creationDate;
+    document.querySelector('#task-name').value = name;
+    document.querySelector('#task-status').value = status;
+    document.querySelector('#task-description').value = description;
+    document.querySelector('#task-note-list-ul').innerHTML = `${notes}`;;
+    document.getElementById(`${priority}`).checked = true;
+    document.querySelector('#task-due-date').value = dueDate;
+  }
+
+  taskModal.classList.add('open');
 };
 
-function todoFormSend(projectUuid, name, status, description, notes, priority, dueDate) {
+function todoFormSend(projectUuid, name, status, description, notes, priority, dueDate, todoUuid, timeCreated) {
 
-  let newTodo = createNewTodo(projectUuid, name, description, notes, priority, dueDate);
-  let docNewTodo = todoItemAppender(projectUuid, newTodo.getId(), name, status, description, notes, priority, dueDate, newTodo.getCreationDate());
+  let newTodo = createNewTodo(projectUuid, name, status, description, notes, priority, dueDate, todoUuid, timeCreated);
+  let docNewTodo = todoItemAppender(projectUuid, name, status, description, notes, priority, dueDate, newTodo.getId(), newTodo.getCreationDate());
 
   const listContainer = document.querySelector(".todo-list-view");
   listContainer.appendChild(docNewTodo);
-
 }
 
-function loadProjectTodos(projectUuid) {
-  const listContainer = document.querySelector(".todo-list-view");
+function projectFormSend(name) {
+  let newProject = createNewProject(name);
+  let docNewProject = projectItemAppender(newProject.getId(), name, newProject.getCreationDate());
 
-  listContainer.replaceChild();
-
-  for( let todo in projects[`${projectUuid}`].getListOfTodos() ) {
-    let currentAppend = todoItemAppender(projectUuid, newTodo.getId(), todo.getName(), todo.getStatus(), todo.getDescription(), todo.getNotes(), todo.getPriority(), todo.getDueDate(), todo.getCreationDate());
-    listContainer.appendChild(currentAppend);
-  }
+  const listContainer = document.querySelector('.project-list-view');
+  listContainer.appendChild(docNewProject);
 }
 
-function projectFormSend() {
-
-}
-
-export default { openTodoForm };
+export { openTodoForm, todoFormSend, projectFormSend };

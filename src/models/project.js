@@ -1,4 +1,5 @@
 import TodoItem from "./todo";
+import { parseISO } from 'date-fns';
 
 class Project {
   #name;
@@ -9,7 +10,7 @@ class Project {
   constructor(name, id, creationDate, listOfTodos = {}) {
     this.#name = name;
     this.#id = id;
-    this.#creationDate = creationDate;
+    this.#creationDate = parseISO(creationDate);
     this.#listOfTodos = listOfTodos;
   }
 
@@ -45,7 +46,16 @@ class Project {
     delete this.#listOfTodos[`${todoUuid}`];
   }
   loadTaskStorage(todo) {
-    this.#listOfTodos[`${todo.getId()}`] = new TodoItem(...todo);
+    console.log(todo);
+    console.log(todo.id);
+    let entries = Object.entries(todo);
+    let iterable = [];
+    let holderPair = {};
+    for (const [key, value] of entries) {
+      holderPair[key] = value;
+      iterable.push(holderPair[key]);
+    }
+    this.#listOfTodos[todo.id] = new TodoItem(...iterable);
   }
 
 }

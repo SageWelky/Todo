@@ -89,7 +89,8 @@ button {
   position: relative;
   cursor: pointer;
   display: inline-block;
-  color: gray;
+  color: black;
+  padding-left: 25px;
 }
 
 [type="checkbox"] + label::before {
@@ -99,7 +100,7 @@ button {
   top: 0;
   height: 18px;
   width: 18px;
-  outline: 2px solid lightgray;
+  outline: 2px solid darkgray;
   background: whitesmoke;
 }
 
@@ -142,7 +143,7 @@ button {
   opacity: 0;
 }
 
-.modal {
+.task-modal {
   position: fixed;
   top: 0;
   left: 0 ;
@@ -159,7 +160,7 @@ button {
   justify-content: center;
 }
 
-.modal.open {
+.task-modal.open {
   position: fixed;
   top: 0;
   left: 0 ;
@@ -179,6 +180,11 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
+}
+
+.project-modal>.form-container {
+  height: 200px;
+  width: 400px;
 }
 
 .form-container>h2 {
@@ -222,7 +228,7 @@ form>div {
   grid-template:
             "a a d d" 130px
             "e e c c" 100px
-            "b b c c" 100px
+            "f f c c" 100px
             "b b c c" / 1fr 1fr 1fr 1fr;
   column-gap: 10px;
   row-gap: 10px;
@@ -277,6 +283,31 @@ form>div {
   padding-top: 15px;
 }
 
+.tstatus {
+  grid-area: f;
+  padding-top: 15px;
+}
+
+.tstatus>label {
+  padding-left: 0px;
+}
+
+.tstatus>input {
+  height: 20px;
+}
+
+.tstatus>input + label::before {
+  margin-left: 115px;
+}
+
+.tstatus>input:checked+ label::after {
+  margin-left: 115px;
+}
+
+.tstatus>input:not(:checked)+ label::after{
+  margin-left: 115px;
+}
+
 .tduedate>input {
   width: 120px;
   margin-right: auto;
@@ -328,4 +359,63 @@ form>div {
 li {
   word-wrap: break-word;
   padding-right: 20px;
+}
+
+.project-modal {
+  position: fixed;
+  top: 0;
+  left: 0 ;
+  right: 0;
+  bottom: 0;
+  padding-bottom: 300px;
+  background-color: gray;
+  opacity: 0;
+  z-index: -1;
+  transition: all 0.3 ease;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-modal.open {
+  position: fixed;
+  top: 0;
+  left: 0 ;
+  right: 0;
+  bottom: 0;
+  padding-bottom: 300px;
+  background-color: rgb(128, 128, 128, 0.5);
+  opacity: 1;
+  z-index: 999;
+}
+
+.list-item-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button-box {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.project-list-view, .task-list-view {
+  padding-inline-start: 0px;
+}
+
+.list-item-container {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100px;
+  border: 2px solid darkgray;
+  padding-inline-start: 7px;
+}
+
+.active-project {
+  background-color: antiquewhite;
 }

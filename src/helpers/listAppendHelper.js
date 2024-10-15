@@ -1,8 +1,16 @@
-function todoItemAppender(projectUuid, todoUuid, name, status, description, notes, priority, dueDate, creationDate) {
+import { saveProjects } from "../contollers/localStorage";
+import projects from "../index";
+import Project from "../models/project";
+import { format } from "date-fns";
+import { handleDropDown } from "./cleanupHelper";
+
+function todoItemAppender(projectUuid, name, status, description, notes, priority, dueDate, todoUuid, creationDate) {
 
   const listItemContainer = document.createElement('li');
   listItemContainer.classList.add('list-item-container');
   listItemContainer.classList.add(`project-uuid-${projectUuid}`);
+  console.log(`${projectUuid}`);
+  console.log(`${todoUuid}`);
   listItemContainer.classList.add(`todo-uuid-${todoUuid}`);
 
   const listItemForm = document.createElement('form');
@@ -34,7 +42,7 @@ function todoItemAppender(projectUuid, todoUuid, name, status, description, note
   const listItemDropDown = document.createElement('div');
   listItemDropDown.classList.add('list-item-drop-down');
   listItemDropDown.classList.add('drop-down-section');
-  listItemDropDown.stlye.display = "none";
+  listItemDropDown.style.display = "none";
 
   const listItemDescription = document.createElement('p');
   listItemDescription.textContent = description;
@@ -58,112 +66,79 @@ function todoItemAppender(projectUuid, todoUuid, name, status, description, note
   listItemDropDown.appendChild(listItemDescription);
   listItemDropDown.appendChild(listItemNotes);
 
-  function handleDropDown() {
-    if(e.currentTarget.children(".list-item-drop-down").style.display === "none"
-    && !e.target.hasClass("checkbox-element")
-    && !e.target.hasClass("drop-down-section")) {
-
-      e.currentTarget.children(".list-item-drop-down").style.display = "flex";
-
-    } else if(e.currentTarget.children(".list-item-drop-down").style.display === "flex"
-    && !e.target.hasClass("checkbox-element")
-    && !e.target.hasClass("drop-down-section")) {
-
-      e.currentTarget.children(".list-item-drop-down").style.display = "none";
-
-    }
-  }
-
-  listItemContainer.addEventListener('click', handleDropDown());
+  listItemContainer.addEventListener('click', handleDropDown);
 
   return listItemContainer;
 }
 
+function projectItemAppender(id, name, creationDate) {
 
-
-
-
-
-
-
-
-function projectItemAppender(name, id, status, description, notes, priority, dueDate, creationDate) {
-
-
+  const projectUuid = id;
 
   const listItemContainer = document.createElement('li');
   listItemContainer.classList.add('list-item-container');
+  listItemContainer.classList.add(`project-uuid-${projectUuid}`);
 
   const listItemForm = document.createElement('form');
-  listItemForm.classList.add('list-item-form');
-  listItemForm.classList.add('checkbox-element');
+  listItemForm.classList.add('list-project-form');
 
-  const checkboxContainer = document.createElement('p');
-  checkboxContainer.classList.add('checkbox-element');
-  const listItemInput = document.createElement('input');
-  listItemInput.classList.add('checkbox-element');
-  listItemInput.type = "checkbox";
-  listItemInput.id = name;
-  listItemInput.name = "completion";
-  const listItemLabel = document.createElement('label');
-  listItemLabel.classList.add('checkbox-element');
+  const listItemLabelInput = document.createElement('input');
+  listItemLabelInput.type = "hidden";
+  listItemLabelInput.value = name;
+
+  const listItemLabel = document.createElement('p');
   listItemLabel.textContent = name;
-  listItemLabel.htmlFor = name;
 
   const listItemInfoContainer = document.createElement('p');
-  listItemInfoContainer.classList.add('list-item-info-container');
+  listItemInfoContainer.classList.add('list-project-info-container');
 
-  const listItemPriority = document.createElement('p');
-  listItemPriority.textContent = "Priority: " + priority;
   const listItemCreationDate = document.createElement('span');
-  listItemCreationDate.textContent = "Created: " + creationDate;
-  const listItemDueDate = document.createElement('span');
-  listItemDueDate.textContent = "Due: " + dueDate;
-
-  const listItemDropDown = document.createElement('div');
-  listItemDropDown.classList.add('list-item-drop-down');
-  listItemDropDown.classList.add('drop-down-section');
-  listItemDropDown.stlye.display = "none";
-
-  const listItemDescription = document.createElement('p');
-  listItemDescription.textContent = description;
-  listItemDescription.classList.add('drop-down-section');
-  const listItemNotes = document.createElement('p');
-  listItemNotes.textContent = notes;
-  listItemNotes.classList.add('drop-down-section');
-
-  listContainer.appendChild(listItemContainer);
+  console.log("format: " + creationDate);
+  listItemCreationDate.textContent = "Created: " + `${format(creationDate, "MMM do, yyyy")}`;
 
   listItemContainer.appendChild(listItemForm);
   listItemContainer.appendChild(listItemInfoContainer);
-  listItemContainer.appendChild(listItemDropDown);
 
-  listItemForm.appendChild(checkboxContainer);
-  checkboxContainer.appendChild(listItemInput);
-  checkboxContainer.appendChild(listItemLabel);
+  listItemForm.appendChild(listItemLabelInput);
+  listItemForm.appendChild(listItemLabel);
 
-  listItemInfoContainer.appendChild(listItemPriority);
   listItemInfoContainer.appendChild(listItemCreationDate);
-  listItemInfoContainer.appendChild(listItemDueDate);
 
-  listItemDropDown.appendChild(listItemDescription);
-  listItemDropDown.appendChild(listItemNotes);
 
-  listItemContainer.addEventListener('click', e => {
-    if(e.currentTarget.children(".list-item-drop-down").style.display === "none"
-    && !e.target.hasClass("checkbox-element")
-    && !e.target.hasClass("drop-down-section")) {
 
-      e.currentTarget.children(".list-item-drop-down").style.display = "flex";
+  listItemLabel.addEventListener('click', function() {
+    this.contentEditable = true;
+    this.focus();
+  });
 
-    } else if(e.currentTarget.children(".list-item-drop-down").style.display === "flex"
-    && !e.target.hasClass("checkbox-element")
-    && !e.target.hasClass("drop-down-section")) {
+  listItemLabel.addEventListener('blur', function() {
+    listItemLabel.innerHTML = listItemLabelInput.value;
+    this.contentEditable = false;
+  });
 
-      e.currentTarget.children(".list-item-drop-down").style.display = "none";
+  listItemLabel.addEventListener('keydown', function(e) {
 
+    if(e.which === 13 && !e.shiftKey) {
+      e.preventDefault();
+      if(listItemLabel.innerHTML && (listItemLabel.innerHTML.replace(/&nbsp;/gi, ' ').trim() !== "")) {
+        listItemLabel.innerHTML = listItemLabel.innerHTML.replace(/&nbsp;/gi, ' ').trim();
+        console.log("trimming accounted for");
+        listItemLabelInput.setAttribute("value", this.innerHTML);
+        console.log(projects);
+        console.log(projects[projectUuid]);
+        projects[projectUuid].setName(listItemLabelInput.value);
+        console.log(projects[projectUuid]);
+        saveProjects();
+        this.blur();
+      }
+    } else if(e.which === 27) {
+      console.log("escaping");
+      e.preventDefault();
+      listItemForm.reset();
+      this.blur();
     }
   });
+
   return listItemContainer;
 }
 
