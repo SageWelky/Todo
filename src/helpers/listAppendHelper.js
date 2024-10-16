@@ -9,8 +9,6 @@ function todoItemAppender(projectUuid, name, status, description, notes, priorit
   const listItemContainer = document.createElement('li');
   listItemContainer.classList.add('list-item-container');
   listItemContainer.classList.add(`project-uuid-${projectUuid}`);
-  console.log(`${projectUuid}`);
-  console.log(`${todoUuid}`);
   listItemContainer.classList.add(`todo-uuid-${todoUuid}`);
 
   const listItemForm = document.createElement('form');
@@ -35,9 +33,9 @@ function todoItemAppender(projectUuid, name, status, description, notes, priorit
   const listItemPriority = document.createElement('p');
   listItemPriority.textContent = "Priority: " + priority;
   const listItemCreationDate = document.createElement('span');
-  listItemCreationDate.textContent = "Created: " + creationDate;
+  listItemCreationDate.textContent = "Created: " + `${format(creationDate, "MMM do, yyyy")}`;
   const listItemDueDate = document.createElement('span');
-  listItemDueDate.textContent = "Due: " + dueDate;
+  listItemDueDate.textContent = "Due: " + `${format(dueDate, "MMM do, yyyy")}`;
 
   const listItemDropDown = document.createElement('div');
   listItemDropDown.classList.add('list-item-drop-down');
@@ -47,8 +45,8 @@ function todoItemAppender(projectUuid, name, status, description, notes, priorit
   const listItemDescription = document.createElement('p');
   listItemDescription.textContent = description;
   listItemDescription.classList.add('drop-down-section');
-  const listItemNotes = document.createElement('p');
-  listItemNotes.textContent = notes;
+  const listItemNotes = document.createElement('ul');
+  listItemNotes.innerHTML = notes;
   listItemNotes.classList.add('drop-down-section');
 
   listItemContainer.appendChild(listItemForm);
@@ -93,7 +91,6 @@ function projectItemAppender(id, name, creationDate) {
   listItemInfoContainer.classList.add('list-project-info-container');
 
   const listItemCreationDate = document.createElement('span');
-  console.log("format: " + creationDate);
   listItemCreationDate.textContent = "Created: " + `${format(creationDate, "MMM do, yyyy")}`;
 
   listItemContainer.appendChild(listItemForm);
@@ -122,17 +119,12 @@ function projectItemAppender(id, name, creationDate) {
       e.preventDefault();
       if(listItemLabel.innerHTML && (listItemLabel.innerHTML.replace(/&nbsp;/gi, ' ').trim() !== "")) {
         listItemLabel.innerHTML = listItemLabel.innerHTML.replace(/&nbsp;/gi, ' ').trim();
-        console.log("trimming accounted for");
         listItemLabelInput.setAttribute("value", this.innerHTML);
-        console.log(projects);
-        console.log(projects[projectUuid]);
         projects[projectUuid].setName(listItemLabelInput.value);
-        console.log(projects[projectUuid]);
         saveProjects();
         this.blur();
       }
     } else if(e.which === 27) {
-      console.log("escaping");
       e.preventDefault();
       listItemForm.reset();
       this.blur();

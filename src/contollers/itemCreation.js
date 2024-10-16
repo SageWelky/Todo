@@ -2,7 +2,7 @@ import projects from "..";
 import Project from "../models/project";
 import TodoItem from "../models/todo";
 import { saveProjects, loadProjects } from "./localStorage";
-// add fn-date to get creation date
+import { format, parseISO } from 'date-fns';
 
 
 function createNewProject(name) {
@@ -15,12 +15,18 @@ function createNewProject(name) {
   return (newProject);
 }
 
-function createNewTodo(projectUuid, name, status, description, notes, priority, dueDate, newUuid = crypto.randomUUID(), timeCreated = "") {
+function createNewTodo(projectUuid, name, status, description, notes, priority, dueDate, newUuid = crypto.randomUUID(), inputTimeCreated = "") {
 
   //amend this line to use the fndate library
-  timeCreated = new Date(timeCreated);
+  let taskForm = document.querySelector('#task-form');
+  let timeCreated;
+  if(taskForm.classList.contains('edit-mode')) {
+    timeCreated = inputTimeCreated;
+  } else {
+    timeCreated = (new Date()).toISOString();
+  }
+
   let newTodo = new TodoItem(name, status, description, notes, priority, dueDate, newUuid, timeCreated);
-  console.log(projectUuid);
   projects[`${projectUuid}`].addTodoToList(newTodo);
   saveProjects(projects);
   return (newTodo);

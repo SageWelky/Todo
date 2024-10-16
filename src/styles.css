@@ -18,7 +18,7 @@ p {
   background-color: whitesmoke;
   display: grid;
   grid-template:
-            "a c c" 150px
+            "a a a" 150px
             "b c c" 1fr
             "b c c" / 1fr 1fr 1fr;
 }
@@ -28,20 +28,29 @@ p {
 }
 
 .app-box>h1 {
+  box-sizing: border-box;
   grid-area: a;
   margin: 0;
   padding-top: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: auto;
+  width: 33.33%;
+  width: calc(1px + (100% / 3));
+  border-right: 2px solid black;
+  border-bottom: 0px solid whitesmoke;
 }
 
-.app-box>div:first-child {
+.app-box>div:first-of-type {
   grid-area: b;
+  box-sizing: border-box;
+  border-top: 2px solid black;
 }
 
 .app-box>div:last-child {
   grid-area: c;
+  border-top: 2px solid black;
 }
 
 .app-box>div {
@@ -78,7 +87,11 @@ button {
 .list-window {
   grid-area: b;
   margin: 0px 20px 30px;
-  border: 1px solid gray;
+  border: 1px solid black;
+  box-shadow: 3px 5px 5px gray inset;
+  background-color: white;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 [type="checkbox"] {
@@ -187,13 +200,20 @@ button {
   width: 400px;
 }
 
+.list-project-form>p {
+  width: fit-content;
+  font-weight: 600;
+  font-size: 18px;
+  padding-inline-start: 32px;
+}
+
 .form-container>h2 {
   margin-right: auto;
   margin-left: 35px;
   padding-top: 20px;
 }
 
-form>p {
+.form-container>p {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -240,6 +260,8 @@ form>div {
   border: 1px solid lightgray;
   padding-left: 10px;
   padding-right: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 #task-form>*>label {
@@ -261,9 +283,14 @@ form>div {
   padding-top: 25px;
 }
 
+.tdescription>label {
+  align-self: center;
+}
+
 .tnotes {
   grid-area: c;
   padding-top: 15px;
+  padding-bottom: 15px;
 }
 
 .tnotes>input {
@@ -323,6 +350,48 @@ form>div {
   border: 2px solid black;
   border-radius: 3px;
   overflow-y: scroll;
+  padding-left: 20px;
+}
+
+#task-note-list-ul>li, .drop-down-section>li {
+  padding-inline-start: 10px;
+}
+
+div.list-item-drop-down {
+  grid-area: c;
+  border: 1px solid grey;
+  grid-template: "a b" 1fr / 1fr 1fr;
+  width: 100%;
+}
+
+.list-item-drop-down>p {
+  grid-area: a;
+  padding-left: 17px;
+  padding-right: 17px;
+  overflow-y: scroll;
+}
+
+.list-item-drop-down>ul {
+  grid-area: b;
+  overflow-y: scroll;
+  border-left: 1px solid grey;
+  height: 95px;
+  padding-left: 20px;
+}
+
+.list-item-drop-down>ul::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+
+.list-item-drop-down>ul::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, .5);
+  box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}
+
+.list-item-drop-down>ul>li>form>p {
+  text-align: start;
 }
 
 #priority-list-ul {
@@ -396,26 +465,73 @@ li {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding-right: 0px;
+  padding-left: 0px;
+  background-color: whitesmoke;
 }
 
-.button-box {
+div.button-box {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
+  column-gap: 9px;
   align-items: center;
+  flex-direction: row;
 }
 
-.project-list-view, .task-list-view {
+.button-box>button {
+  box-shadow: 1px 1px 1px black;
+}
+
+.project-list-view, .todo-list-view {
   padding-inline-start: 0px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  row-gap: 7px;
+  padding-top: 5px;
 }
 
 .list-item-container {
   box-sizing: border-box;
   width: 100%;
   height: 100px;
-  border: 2px solid darkgray;
+  border: 2px solid black;
+  padding-inline-start: 0px;
+  display: grid;
+  grid-template:  "a b" 100px
+                  "c c" 100px / 1fr 1fr;;
+}
+
+.list-item-form {
+  grid-area: a;
   padding-inline-start: 7px;
 }
 
-.active-project {
+.listItemInfoContainer {
+  grid-area: b;
+  padding-right: 20px;
+}
+
+.listItemDropDown {
+  height: 100%;
+  grid-area: c;
+}
+
+.active-project, .active-task {
   background-color: antiquewhite;
+}
+
+ul {
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  padding-inline-start: 0px;
+}
+
+form.checkbox-element {
+  box-sizing: border-box;
+  width: fit-content;
+}
+
+li {
+  list-style-type: disc;
 }

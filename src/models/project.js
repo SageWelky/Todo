@@ -1,5 +1,6 @@
 import TodoItem from "./todo";
 import { parseISO } from 'date-fns';
+import { makeIterable } from "../helpers/formatHelper";
 
 class Project {
   #name;
@@ -46,15 +47,7 @@ class Project {
     delete this.#listOfTodos[`${todoUuid}`];
   }
   loadTaskStorage(todo) {
-    console.log(todo);
-    console.log(todo.id);
-    let entries = Object.entries(todo);
-    let iterable = [];
-    let holderPair = {};
-    for (const [key, value] of entries) {
-      holderPair[key] = value;
-      iterable.push(holderPair[key]);
-    }
+    let iterable = makeIterable(todo);
     this.#listOfTodos[todo.id] = new TodoItem(...iterable);
   }
 

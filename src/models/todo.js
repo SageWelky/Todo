@@ -1,3 +1,5 @@
+import { parseISO } from 'date-fns';
+
 class TodoItem {
   #name;
   #id;
@@ -16,7 +18,7 @@ class TodoItem {
     this.#priority = priority;
     this.#dueDate = dueDate;
     this.#id = id;
-    this.#creationDate = creationDate;
+    this.#creationDate = parseISO(creationDate);
   }
 
   toJSON() {

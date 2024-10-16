@@ -10,33 +10,42 @@ todoListContainer.addEventListener('click', function(e) {
   let listItem = e.target.closest('.list-item-container');
 
   if (listItem && !listItem.classList.contains('active-task')) {
-    let activeElements = projectListContainer.querySelectorAll('.active-task');
+    let activeElements = todoListContainer.querySelectorAll('.active-task');
 
     activeElements.forEach((activeElement) => {
       activeElement.classList.remove('active-task');
     });
 
     listItem.classList.add('active-task');
+
+    let openDrops = e.currentTarget.querySelectorAll('.list-item-drop-down');
+    openDrops.forEach( function(element) {
+      if(!listItem.contains(element)) {
+        element.style.display = "none";
+        element.closest('.list-item-container').style.height = "100px";
+      }
+    });
+
   }
 });
 
 //active project selector to retain which project each task belongs to
-const projectListContainer = document.querySelector(".project-list-view");
+const projectListContainer = document.querySelector('.project-list-view');
 projectListContainer.addEventListener('click', function(e) {
 
   let listItem = e.target.closest('.list-item-container');
 
-  if (listItem && !listItem.classList.contains("active-project")) {
-    let activeElements = projectListContainer.querySelectorAll(".active-project");
+  if (listItem && !listItem.classList.contains('active-project')) {
+    let activeElements = projectListContainer.querySelectorAll('.active-project');
 
     activeElements.forEach((activeElement) => {
-      activeElement.classList.remove("active-project");
+      activeElement.classList.remove('active-project');
     });
 
     listItem.classList.add('active-project');
-    activeElements = projectListContainer.querySelectorAll(".active-project");
+    activeElements = projectListContainer.querySelectorAll('.active-project');
     let projectUuid = [...activeElements].map(element => [...element.classList]).flat()
-    .find(className => className.startsWith("project-uuid-")).substring(13);
+    .find(className => className.startsWith('project-uuid-')).substring(13);
     loadProjectTodos(projectUuid);
   }
 });
@@ -46,17 +55,6 @@ export function loadProjectTodos(projectUuid) {
   const listContainer = document.querySelector(".todo-list-view");
 
   listContainer.replaceChildren();
-
-  // let entries = Object.entries(todo);
-  // let iterable = [];
-  // let holderPair = {};
-  // for (const [key, value] of entries) {
-  //   holderPair[key] = value;
-  //   iterable.push(holderPair[key]);
-  // }
-  // this.#listOfTodos[todo.id] = new TodoItem(...iterable);
-
-
   let todos = projects[`${projectUuid}`].getListOfTodos();
 
   if(Object.keys(todos).length > 0){
