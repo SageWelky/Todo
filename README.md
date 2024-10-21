@@ -1,5 +1,7 @@
 # Project: Todo App
 
+[Live Preview](https://sagewelky.github.io/Todo/)
+
 ## Description:
 
 ### Overview:
